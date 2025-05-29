@@ -2,13 +2,13 @@
 export type Language = 'en' | 'fr';
 export type Ceremony = 'register' | 'authenticate' | 'update' | 'test';
 export type VerificationMethod = "docScan" | "ageEstimation" | "digitalId" | "creditCard" | "mobile" | "ftn" | "swedishBankId" | "mitId" | "laWallet" | "socialSecurityNumber" | "usFloridaHb3" | "address" | "emailDirectCheck" | "doubleAnonymity"
-export type CeremonyMessage = 'registered' | 'authenticated' | 'updated' | 'error';
+export type CeremonyMessage = 'registered' | 'authenticated' | 'updated' | 'validated'  | 'error';
 export type ErrorMessage = 'Invalid request' | 'Invalid credentials' | 'Credential not found' | 'Internal server error' | 'Failed to complete ceremony'
 
 export interface BaseResult {
   message: CeremonyMessage;
   error?: ErrorMessage;
-}
+};
 
 export type Verifications = {
   [K in VerificationMethod]?: VerificationDetails;
@@ -53,7 +53,7 @@ export interface StyleAgeKeyProps {
 export interface StyleAgeKeyTestProps {
   language: Language;
   isLoading: boolean;
-}
+};
 
 // Ceremony-specific props with typed onResult callbacks
 export interface AuthenticateProps extends BaseAgeKeyProps{
