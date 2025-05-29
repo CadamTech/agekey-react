@@ -40,14 +40,14 @@
     "vite-plugin-dts": "^4.5.0",
     "vitest": "^3.0.6"
   },
-  "main": "./dist/opale-react.cjs.js",
-  "module": "./dist/opale-react.es.js",
+  "main": "./dist/agekey-react.cjs.js",
+  "module": "./dist/agekey-react.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/opale-react.es.js",
-      "require": "./dist/opale-react.cjs.js"
+      "import": "./dist/agekey-react.es.js",
+      "require": "./dist/agekey-react.cjs.js"
     }
   },
   "files": [

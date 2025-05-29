@@ -6,9 +6,9 @@ A React component library for AgeKey registration, authentication and modificati
 ## Installation
 
 ```bash
-npm install opale-react
+npm install agekey-react
 # or
-yarn add opale-react
+yarn add agekey-react
 ```
 
 ## Components
@@ -30,7 +30,7 @@ Component for AgeKey registration with age verification.
 #### Example
 
 ```jsx
-import { AgeKeyRegister, RegisterResult } from 'opale-react';
+import { AgeKeyRegister, RegisterResult } from 'agekey-react';
 
 
 function App() {
@@ -89,7 +89,7 @@ Component for authenticating previously registered AgeKey.
 
 
 ```jsx
-import { AgeKeyAuthenticate, AuthenticateResult, VerificationMethod } from 'opale-react';
+import { AgeKeyAuthenticate, AuthenticateResult, VerificationMethod } from 'agekey-react';
 
 
 function App() {
@@ -163,7 +163,7 @@ Component for adding new verifcation to existing AgeKey.
 #### Example
 
 ```jsx
-import { AgeKeyUpdate, UpdateResult } from "opale-react";
+import { AgeKeyUpdate, UpdateResult } from "agekey-react";
 
 function App() {
 
@@ -234,7 +234,7 @@ Component for testing new AgeKey.
 #### Example
 
 ```jsx
-import { AgeKeyTest, TestResult } from "opale-react";
+import { AgeKeyTest, TestResult } from "agekey-react";
 
 function App() {
 
@@ -301,7 +301,7 @@ Firefox does not currently support related origin requests on WebAuthn. To handl
 Example of handling Firefox redirects post-ceremony:
 
 ```jsx
-import { useOpaleSignature } from 'opale-react';
+import { useOpaleSignature } from 'agekey-react';
 
 function App() {
   const { outcome, expiresIn, data } = useOpaleSignature({ signingSecret });

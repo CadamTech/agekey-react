@@ -7,9 +7,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
-      name: 'OpaleReact',
+      name: 'AgeKeyReact',
       formats: ['es', 'cjs'],  // Explicitly define formats
-      fileName: (format) => `opale-react.${format}.js`
+      fileName: (format) => `agekey-react.${format}.js`
     },
     // sourcemap: 'inline',
     minify: false,
