@@ -2,10 +2,11 @@ import React, { JSX, useEffect, useState } from 'react';
 import axios from 'axios';
 import { TestProps } from './types';
 import { AuthenticationResponseJSON, startAuthentication } from '@simplewebauthn/browser';
-import { AgeKeyTestStyleComponent, createErrorResponse, getEnvironmentUrls } from './Shared';
+import { AgeKeyTestStyleComponent } from './Shared';
+import { getEnvironmentUrls, createErrorResponse } from '../utils';
 import { ageKeyButton } from "./style";
 
-export const AgeKeyTest = ({ publicKey, sessionId, onResult, language }: TestProps): JSX.Element => {
+export const AgeKeyTest = ({ publicKey, sessionId, onResult, language, ref }: TestProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [{baseApiUrl, authUrl }, setEnvironmentUrls] = useState({baseApiUrl: "", authUrl: ""});
 
@@ -59,7 +60,7 @@ export const AgeKeyTest = ({ publicKey, sessionId, onResult, language }: TestPro
     };
   };
 
-  return <button style={{...ageKeyButton}} onClick={handleTest} disabled={isLoading}>
+  return <button style={{...ageKeyButton}} onClick={handleTest} disabled={isLoading} ref={ref}>
     <AgeKeyTestStyleComponent isLoading={isLoading} language={language || 'en'} />
   </button>
 };

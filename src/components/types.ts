@@ -41,6 +41,7 @@ export interface BaseAgeKeyProps {
   sessionId: string;
   ageThreshold?: number;
   language?: Language;
+  ref?: (node: HTMLButtonElement | null) => void
 };
 
 export interface StyleAgeKeyProps {
@@ -81,3 +82,5 @@ export type CallbackData = {
   expiresIn: number | null,
   data: Verifications | null
 };
+
+export type ErrorMessages = Record<number, ErrorMessage> & { default: 'Failed to complete ceremony' };
