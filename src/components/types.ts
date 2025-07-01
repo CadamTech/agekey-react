@@ -7,6 +7,7 @@ export type ErrorMessage = 'Invalid request' | 'Invalid credentials' | 'Credenti
 
 export interface BaseResult {
   message: CeremonyMessage;
+  stateEncrypted?: string;
   error?: ErrorMessage;
 };
 
@@ -41,6 +42,8 @@ export interface BaseAgeKeyProps {
   sessionId: string;
   ageThreshold?: number;
   language?: Language;
+  stateEncrypted?: string;
+  encryptState?: boolean;
   ref?: (node: HTMLButtonElement | null) => void
 };
 

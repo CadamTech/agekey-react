@@ -315,3 +315,12 @@ function App() {
   )
 }
 ```
+
+### State Encryption
+
+Ceremony components accept `stateEncrypted` (string) and `encryptState` (boolean) as props.
+
+`stateEncrypted` is sent in place of verificationMethod and ageEstimation.
+`encryptState` requests the authentcation data to be sent as an encrypted string.
+
+In either case the stringyfied json is encrypted and decrypted using the shared signingSecret.

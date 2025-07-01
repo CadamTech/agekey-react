@@ -6,7 +6,7 @@ import { AgeKeyStyleComponent } from './Shared';
 import { getEnvironmentUrls, createErrorResponse } from '../utils';
 import { ageKeyButton } from "./style";
 
-export const AgeKeyUpdate = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, language, ref }: UpdateProps): JSX.Element => {
+export const AgeKeyUpdate = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, language, ref, stateEncrypted, encryptState }: UpdateProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [{baseApiUrl, authUrl }, setEnvironmentUrls] = useState({baseApiUrl: "", authUrl: ""});
 
@@ -18,17 +18,21 @@ export const AgeKeyUpdate = ({ publicKey, sessionId, ageThreshold = 18, verifica
 
   async function getUpdateOptions(publicKey: string, sessionId: string, ageThreshold: number, verificationMethod: string) {
     const url = `${baseApiUrl}/agekey/update-options/${sessionId}/?publicKey=${publicKey}`;
-    const { data } = await axios.post(url, {
-      ageThreshold: ageThreshold,
-      verificationMethod: verificationMethod,
-    })
-    return data;
+    const state = { ageThreshold: ageThreshold, verificationMethod: verificationMethod }
+    if (stateEncrypted) {
+        const { data } = await axios.post(url, { stateEncrypted: stateEncrypted });
+        return data;
+    } else {
+      const { data } = await axios.post(url, state);
+      return data;
+    }
   };
 
   async function verifyUpdate(publicKey: string, sessionId: string, authenticationResponse: AuthenticationResponseJSON) {
     const url = `${baseApiUrl}/agekey/verify-update/${sessionId}?publicKey=${publicKey}`;
     const { data } = await axios.post(url, {
-      authenticationResponse: authenticationResponse
+      authenticationResponse: authenticationResponse,
+      encryptState: encryptState
     });
     return data;
   };
@@ -40,8 +44,15 @@ export const AgeKeyUpdate = ({ publicKey, sessionId, ageThreshold = 18, verifica
 
       // Check for Firefox and redirect if needed
       if (window.navigator.userAgent.search("Firefox") > -1) {
+
         const state = JSON.stringify({ ageThreshold: ageThreshold, verificationMethod: verificationMethod });
-        const targetUrl = `${authUrl}/origin-relay/update/?sessionId=${sessionId}&publicKey=${publicKey}&state=${encodeURIComponent(state)}`;
+        let targetUrl = `${authUrl}/origin-relay/update/?sessionId=${sessionId}&publicKey=${publicKey}`
+        if (stateEncrypted) {
+          targetUrl += `&stateEncrypted=${stateEncrypted}&encryptState=true`
+        } else {
+          targetUrl += `&state=${encodeURIComponent(state)}`
+        }
+
         if (authUrl !== window.location.origin) {
           window.location.href = targetUrl;
           return;

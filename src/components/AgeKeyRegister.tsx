@@ -6,9 +6,9 @@ import { AgeKeyStyleComponent } from './Shared';
 import { getEnvironmentUrls, createErrorResponse } from '../utils';
 import { ageKeyButton } from "./style"
 
-export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, language, ref }: RegisterProps): JSX.Element => {
+export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, language, ref, stateEncrypted }: RegisterProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
-  const [{baseApiUrl, authUrl }, setEnvironmentUrls] = useState({baseApiUrl: "", authUrl: ""});
+  const [{ baseApiUrl, authUrl }, setEnvironmentUrls] = useState({ baseApiUrl: "", authUrl: "" });
 
   useEffect(() => {
     if (!publicKey || !sessionId) return
@@ -18,11 +18,14 @@ export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verifi
 
   async function getRegistrationOptions(publicKey: string, sessionId: string, ageThreshold: number, verificationMethod: string) {
     const url = `${baseApiUrl}/agekey/registration-options/${sessionId}/?publicKey=${publicKey}`;
-    const { data } = await axios.post(url, {
-      ageThreshold: ageThreshold,
-      verificationMethod: verificationMethod,
-    })
-    return data;
+    const state = { ageThreshold: ageThreshold, verificationMethod: verificationMethod }
+    if (stateEncrypted) {
+      const { data } = await axios.post(url, { stateEncrypted: stateEncrypted });
+      return data;
+    } else {
+      const { data } = await axios.post(url, state);
+      return data;
+    }
   };
 
   async function verifyRegistration(publicKey: string, sessionId: string, registrationResponse: RegistrationResponseJSON) {
@@ -41,7 +44,13 @@ export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verifi
       // Check for Firefox and redirect if needed
       if (window.navigator.userAgent.search("Firefox") > -1) {
         const state = JSON.stringify({ ageThreshold: ageThreshold, verificationMethod: verificationMethod });
-        const targetUrl = `${authUrl}/origin-relay/register/?sessionId=${sessionId}&publicKey=${publicKey}&state=${encodeURIComponent(state)}`;
+        let targetUrl = `${authUrl}/origin-relay/register/?sessionId=${sessionId}&publicKey=${publicKey}`
+        if (stateEncrypted) {
+          targetUrl += `&stateEncrypted=${stateEncrypted}`
+        } else {
+          targetUrl += `&state=${encodeURIComponent(state)}`
+        }
+
         if (authUrl !== window.location.origin) {
           window.location.href = targetUrl;
           return;
@@ -62,8 +71,8 @@ export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verifi
     };
   };
 
-  return <button style={{...ageKeyButton}} onClick={handleRegister} disabled={isLoading} ref={ref}>
-    <AgeKeyStyleComponent language={language || 'en'} ageThreshold={ageThreshold || 18} ceremony={'register'} isLoading={isLoading}/>
+  return <button style={{ ...ageKeyButton }} onClick={handleRegister} disabled={isLoading} ref={ref}>
+    <AgeKeyStyleComponent language={language || 'en'} ageThreshold={ageThreshold || 18} ceremony={'register'} isLoading={isLoading} />
   </button>
 };
 

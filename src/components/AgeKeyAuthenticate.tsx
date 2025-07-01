@@ -6,7 +6,7 @@ import { AgeKeyStyleComponent } from './Shared';
 import { getEnvironmentUrls, createErrorResponse } from '../utils';
 import { ageKeyButton } from "./style";
 
-export const AgeKeyAuthenticate = ({ publicKey, sessionId, onResult, ageThreshold, language, ref }: AuthenticateProps): JSX.Element => {
+export const AgeKeyAuthenticate = ({ publicKey, sessionId, onResult, ageThreshold, language, ref, encryptState }: AuthenticateProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [{ baseApiUrl, authUrl }, setEnvironmentUrls] = useState({ baseApiUrl: "", authUrl: "" });
 
@@ -26,6 +26,7 @@ export const AgeKeyAuthenticate = ({ publicKey, sessionId, onResult, ageThreshol
     const url = `${baseApiUrl}/agekey/verify-authentication/${sessionId}?publicKey=${publicKey}`;
     const { data } = await axios.post(url, {
       authenticationResponse: authenticationResponse,
+      encryptState: encryptState
     });
     return data;
   };
@@ -38,7 +39,7 @@ export const AgeKeyAuthenticate = ({ publicKey, sessionId, onResult, ageThreshol
       // Check for Firefox and redirect if needed
       if (window.navigator.userAgent.search("Firefox") > -1) {
         // Create the target URL
-        const targetUrl = `${authUrl}/origin-relay/authenticate/?sessionId=${sessionId}&publicKey=${publicKey}`;
+        const targetUrl = `${authUrl}/origin-relay/authenticate/?sessionId=${sessionId}&publicKey=${publicKey}${encryptState ? '&encryptState=true': ''}`;
         if (authUrl !== window.location.origin) {
           window.location.href = targetUrl;
           return;
@@ -53,6 +54,7 @@ export const AgeKeyAuthenticate = ({ publicKey, sessionId, onResult, ageThreshol
       const response = await verifyAuthentication(publicKey, sessionId, authenticationResponse);
       onResult(response);
     } catch (error) {
+      console.log(error)
       onResult(createErrorResponse()(error));
     } finally {
       setIsLoading(false);

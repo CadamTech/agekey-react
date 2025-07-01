@@ -33,7 +33,7 @@ export const createErrorResponse = (errorMessages?: Partial<Record<number, strin
   const messages: ErrorMessages = { 
     ...defaultMessages, 
     ...errorMessages,
-    default: defaultMessages.default // Ensure default always exists
+    default: defaultMessages.default
   };
 
   return (error: unknown): BaseResult => {
