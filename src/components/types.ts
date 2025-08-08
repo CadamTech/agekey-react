@@ -1,6 +1,6 @@
 // Common types
 export type Language = 'en' | 'fr';
-export type Ceremony = 'register' | 'authenticate' | 'update' | 'test';
+export type Ceremony = 'register' | 'authenticate' | 'update' | 'test' | 'manage';
 export type VerificationMethod = "docScan" | "ageEstimation" | "digitalId" | "creditCard" | "mobile" | "ftn" | "swedishBankId" | "mitId" | "laWallet" | "socialSecurityNumber" | "usFloridaHb3" | "address" | "emailDirectCheck" | "doubleAnonymity"
 export type CeremonyMessage = 'registered' | 'authenticated' | 'updated' | 'validated'  | 'error';
 export type ErrorMessage = 'Invalid request' | 'Invalid credentials' | 'Credential not found' | 'Internal server error' | 'Failed to complete ceremony'
@@ -28,6 +28,10 @@ export interface AuthenticateResult extends BaseResult {
   authenticationData?: Verifications;
   redirectUrl?: string
 };
+
+export interface ManageResult extends BaseResult {
+  authenticationData?: Verifications;
+}
 
 export interface UpdateResult extends BaseResult {
   authenticationData?: Verifications;
@@ -76,6 +80,10 @@ export interface UpdateProps extends BaseAgeKeyProps{
 
 export interface TestProps extends BaseAgeKeyProps{
   onResult: (result: TestResult) => void;
+};
+
+export interface ManageProps extends BaseAgeKeyProps{
+  onResult: (result: ManageResult) => void;
 };
 
 export type Outcome = "pending" | "signatureMismatch" | "timestampExpired" | "verificationFailed" | "success";

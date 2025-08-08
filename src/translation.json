@@ -14,5 +14,9 @@
   "test": {
     "fr": "tester mon",
     "en": "try my"
+  },
+  "manage": {
+    "fr": "gérer mon",
+    "en": "manage my"
   }
 }

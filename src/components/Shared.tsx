@@ -26,15 +26,32 @@ const AgeKeyIconSVG: React.FunctionComponent<{ age?: number, fill?: string }> = 
         height="24"
         viewBox="0 0 160 160"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg" 
-        style={{fill: fill ? fill : 'white'}}
-        >
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ fill: fill ? fill : 'white' }}
+      >
         {age && age}
         <path d="M102.179 115.451C113.602 115.473 124.775 112.104 134.282 105.769C143.79 99.4349 151.204 90.4205 155.586 79.868C159.967 69.3155 161.12 57.6994 158.897 46.4914C156.673 35.2833 151.175 24.9872 143.097 16.9075C135.02 8.82771 124.727 3.32753 113.522 1.10375C102.317 -1.12003 90.704 0.0325807 80.1545 4.41554C69.6049 8.79851 60.5931 16.2148 54.2604 25.7248C47.9277 35.2348 44.5591 46.411 44.5812 57.8375C44.5851 63.8129 45.5035 69.7526 47.3044 75.45L2.31428 120.334C1.57791 121.06 0.993981 121.926 0.596802 122.881C0.199623 123.836 -0.00280028 124.86 0.00142317 125.894L0.00142317 152.015C-0.0184864 153.059 0.170676 154.097 0.557783 155.068C0.94489 156.038 1.52212 156.922 2.25552 157.666C2.98892 158.41 3.86367 158.999 4.82832 159.4C5.79296 159.801 6.82802 160.005 7.87259 160H33.9854C35.0205 160.005 36.0462 159.805 37.0034 159.411C37.9606 159.017 38.8303 158.437 39.5622 157.705C40.2941 156.973 40.8737 156.103 41.2675 155.145C41.6613 154.188 41.8615 153.162 41.8566 152.127V139.029H54.9876C57.0722 139.019 59.0685 138.187 60.5426 136.712C62.0166 135.238 62.849 133.241 62.8588 131.156L62.8588 118.021H75.9525C76.9864 118.025 78.0106 117.823 78.9651 117.425C79.9197 117.028 80.7852 116.444 81.5108 115.708L84.5712 112.727C90.267 114.529 96.205 115.447 102.179 115.451Z" fill="inherit" />
       </svg>
     </div>
   )
 };
+
+const AgeKeyManageSVG: React.FunctionComponent<{fill?: string}> = ({fill}) => {
+  return <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ stroke: fill ? fill : 'white', margin: '0 3px 0 3px' }}>
+          <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+          <circle cx="12" cy="12" r="3" />
+          </svg>
+}
 
 const AgeKeyTextSVG: React.FunctionComponent<{ fill?: string }> = ({ fill }) => {
   return (
@@ -55,12 +72,12 @@ export const AgeKeyStyleComponent: React.FC<StyleAgeKeyProps> = ({ language, age
   const [dynamicStyle, setDynamicStyle] = useState({ ...ageKeyStyleContainer });
 
   useEffect(() => {
-      setText(transations[ceremony][language]);
+    setText(transations[ceremony][language]);
   }, [language]);
 
   return <div style={{ ...dynamicStyle }} onMouseEnter={() => setDynamicStyle({ ...ageKeyStyleContainer, ...ageKeyStyleContainerHover })} onMouseLeave={() => setDynamicStyle({ ...ageKeyStyleContainer })}>
     {text}
-    <AgeKeyIconSVG age={ageThreshold || 18} />
+    {ageThreshold === -1 ? <AgeKeyManageSVG /> : <AgeKeyIconSVG age={ageThreshold || 18} />}
     <AgeKeyTextSVG />
     {isLoading && <div style={{ ...ageKeyLoaderContainer }}>
       <span style={{ ...ageKeyLoader }} />
@@ -74,13 +91,13 @@ export const AgeKeyTestStyleComponent: React.FC<StyleAgeKeyTestProps> = ({ langu
   const [dynamicStyle, setDynamicStyle] = useState(baseStyle);
 
   useEffect(() => {
-      setText(transations.test[language]);
+    setText(transations.test[language]);
   }, [language]);
 
-  return <div style={{ ...dynamicStyle }} onMouseEnter={() => setDynamicStyle({ ...baseStyle, ...ageKeyTestStyleContainerHover })} onMouseLeave={() => setDynamicStyle({...baseStyle})}>
+  return <div style={{ ...dynamicStyle }} onMouseEnter={() => setDynamicStyle({ ...baseStyle, ...ageKeyTestStyleContainerHover })} onMouseLeave={() => setDynamicStyle({ ...baseStyle })}>
     {text}
-    <AgeKeyIconSVG fill={"#373A46"}/>
-    <AgeKeyTextSVG fill={"#373A46"}/>
+    <AgeKeyIconSVG fill={"#373A46"} />
+    <AgeKeyTextSVG fill={"#373A46"} />
     {isLoading && <div style={{ ...ageKeyLoaderContainer, backgroundColor: '#ECECEE' }}>
       <span style={{ ...ageKeyLoader }} />
     </div>}
