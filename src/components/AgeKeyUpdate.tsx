@@ -2,11 +2,10 @@ import React, { JSX, useEffect, useState } from 'react';
 import axios from 'axios';
 import { UpdateProps } from './types';
 import { AuthenticationResponseJSON, startAuthentication } from '@simplewebauthn/browser';
-import { AgeKeyStyleComponent } from './Shared';
+import AgeKeyStyleComponent from './Shared';
 import { getEnvironmentUrls, createErrorResponse } from '../utils';
-import { ageKeyButton } from "./style";
 
-export const AgeKeyUpdate = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, language, ref, stateEncrypted, encryptState }: UpdateProps): JSX.Element => {
+export const AgeKeyUpdate = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, ref, stateEncrypted, encryptState }: UpdateProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [{baseApiUrl, authUrl }, setEnvironmentUrls] = useState({baseApiUrl: "", authUrl: ""});
 
@@ -73,7 +72,5 @@ export const AgeKeyUpdate = ({ publicKey, sessionId, ageThreshold = 18, verifica
     };
   };
 
-  return <button style={{...ageKeyButton}} onClick={handleUpdate} disabled={isLoading} ref={ref}>
-    <AgeKeyStyleComponent ceremony='update' language={language || 'en'} ageThreshold={ageThreshold || 18} isLoading={isLoading}/>
-  </button>
+  return <AgeKeyStyleComponent ceremony='update' onClick={handleUpdate} disabled={isLoading} innerRef={ref} />
 };

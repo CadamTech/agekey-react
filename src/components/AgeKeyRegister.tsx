@@ -2,11 +2,10 @@ import React, { JSX, useEffect, useState } from 'react'
 import axios from "axios";
 import { RegisterProps } from './types'
 import { startRegistration, RegistrationResponseJSON } from '@simplewebauthn/browser';
-import { AgeKeyStyleComponent } from './Shared';
+import AgeKeyStyleComponent from './Shared';
 import { getEnvironmentUrls, createErrorResponse } from '../utils';
-import { ageKeyButton } from "./style"
 
-export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, language, ref, stateEncrypted }: RegisterProps): JSX.Element => {
+export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verificationMethod, onResult, ref, stateEncrypted }: RegisterProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [{ baseApiUrl, authUrl }, setEnvironmentUrls] = useState({ baseApiUrl: "", authUrl: "" });
 
@@ -71,8 +70,6 @@ export const AgeKeyRegister = ({ publicKey, sessionId, ageThreshold = 18, verifi
     };
   };
 
-  return <button style={{ ...ageKeyButton }} onClick={handleRegister} disabled={isLoading} ref={ref}>
-    <AgeKeyStyleComponent language={language || 'en'} ageThreshold={ageThreshold || 18} ceremony={'register'} isLoading={isLoading} />
-  </button>
+  return <AgeKeyStyleComponent ceremony={'register'}  onClick={handleRegister} disabled={isLoading} innerRef={ref}/>
 };
 
