@@ -1,7 +1,7 @@
 // Common types
 export type Language = 'en' | 'fr';
 export type Ceremony = 'register' | 'authenticate' | 'update' | 'test' | 'manage';
-export type VerificationMethod = "docScan" | "ageEstimation" | "digitalId" | "creditCard" | "mobile" | "ftn" | "swedishBankId" | "mitId" | "laWallet" | "socialSecurityNumber" | "usFloridaHb3" | "address" | "emailDirectCheck" | "doubleAnonymity"
+export type VerificationMethod = "docScan" | "ageEstimation" | "digitalId" | "creditCard" | "mobile" | "ftn" | "swedishBankId" | "mitId" | "laWallet" | "socialSecurityNumber" | "usFloridaHb3" | "address" | "emailDirectCheck" | "doubleAnonymity" | "connectId" | "koreanRealName"
 export type CeremonyMessage = 'registered' | 'authenticated' | 'updated' | 'validated'  | 'error';
 export type ErrorMessage = 'Invalid request' | 'Invalid credentials' | 'Credential not found' | 'Internal server error' | 'Failed to complete ceremony'
 

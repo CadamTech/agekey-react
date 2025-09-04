@@ -1,18 +1,22 @@
-import React from "react";
-import { Ceremony } from "./types";
+import React, { useState } from "react";
 
-const AgeKeyStyleComponent: React.FC<{
+// Define the Ceremony type since it's imported
+type Ceremony = "register" | "authenticate" | "update" | "test" | "manage";
+
+export const AgeKeyStyleComponent: React.FC<{
   ceremony: Ceremony;
   onClick?: any;
   disabled?: boolean;
   innerRef?: any;
 }> = ({ ceremony, onClick, disabled, innerRef }) => {
+  const [hovered, setHovered] = useState(false);
+
   const text = {
-    register: "create my ",
-    authenticate: "use my ",
-    update: "upgrade my ",
-    test: "test my ",
-    manage: "manage my ",
+    register: "create my",
+    authenticate: "use my",
+    update: "upgrade my",
+    test: "test my",
+    manage: "manage my",
   };
 
   return (
@@ -20,27 +24,34 @@ const AgeKeyStyleComponent: React.FC<{
       ref={innerRef}
       onClick={onClick}
       disabled={disabled}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
-        backgroundColor: "#392669", // bg-violet-clear
+        backgroundColor: "#392669",
         width: "280px",
         height: "60px",
-        borderRadius: "9999px", // rounded-full
+        borderRadius: "9999px",
         position: "relative",
-        cursor: "pointer",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        padding: "0 10px 0 10px",
+        cursor: disabled ? "not-allowed" : "pointer",
         overflow: "hidden",
+        gap: '0px 10px',
         color: "white",
         fontWeight: 400,
+        border: "none",
+        transition: "all 200ms ease-in-out",
+        opacity: disabled ? 0.6 : 1,
       }}
     >
       {/* ceremony text */}
       <span
         style={{
-          fontWeight: 300, // font-light
-          position: "absolute",
-          left: "2.5rem", // left-10
-          fontSize: "0.875rem", // text-sm
-          top: "50%",
-          transform: "translateY(-50%)", // vertically center
+          fontWeight: 300,
+          fontSize: "15px",
+          letterSpacing: '1px'
         }}
       >
         {text[ceremony || "register"]}
@@ -51,50 +62,45 @@ const AgeKeyStyleComponent: React.FC<{
         src="https://public-assets.opale.io/agekey.org/logos/agekey-text.svg"
         alt="AgeKey"
         style={{
-          position: "absolute",
-          left: "7.5rem", // left-30
-          top: "50%",
-          transform: "translateY(-50%)",
+          height: "24px",
         }}
       />
 
       {/* Plus icon circle */}
       <div
         style={{
-          minWidth: "2.5rem", // min-w-10
-          minHeight: "2.5rem", // min-h-10
-          backgroundColor: "#564787", // bg-lavander/20
+          minWidth: "2.5rem",
+          minHeight: "2.5rem",
+          backgroundColor: "#564787",
           borderRadius: "9999px",
-          position: "absolute",
-          right: "0.75rem", // right-3
-          top: "50%",
-          transform: "translateY(-50%)",
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           transition: "transform 200ms ease-in-out",
+          transform: hovered 
+            ? "rotate(90deg)" 
+            : "rotate(0deg)",
         }}
       >
+        {/* horizontal bar */}
         <div
           style={{
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%) rotate(90deg)",
             height: "3px",
             width: "1rem",
             backgroundColor: "white",
             borderRadius: "9999px",
           }}
         />
+        {/* vertical bar */}
         <div
           style={{
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            height: "3px",
-            width: "1rem",
+            height: "1rem",
+            width: "3px",
             backgroundColor: "white",
             borderRadius: "9999px",
-            transition: "transform 200ms ease-in-out",
           }}
         />
       </div>
@@ -102,4 +108,4 @@ const AgeKeyStyleComponent: React.FC<{
   );
 };
 
-export default AgeKeyStyleComponent;
+export default AgeKeyStyleComponent
